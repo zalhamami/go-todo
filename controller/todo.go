@@ -22,7 +22,7 @@ func CreateTodo(c *gin.Context) {
 		Completed: completed,
 	}
 
-	// This line below is a represent of "INSERT INTO table VALUES (value1, value1)".
+	// This line below is equivalent to "INSERT INTO table VALUES (value1, value1)".
 	// We use & sign to get the address memory of todo model.
 	config.DB.Create(&todo)
 
@@ -38,7 +38,7 @@ func GetAllTodo(c *gin.Context) {
 	var todos []model.Todo
 	var response []model.TodoSchema
 
-	// This line below is a represent of "SELECt * FROM table".
+	// This line below is equivalent to "SELECt * FROM table".
 	config.DB.Find(&todos)
 
 	// If data is not found, the program will stop and return an error message.
@@ -79,8 +79,9 @@ func GetTodoByID(c *gin.Context) {
 	// Get the paramater
 	ID := c.Param("id")
 
-	// This line below is represent of "SELECT * FROM table WHERE id = id".
+	// This line below is equivalent to "SELECT * FROM table WHERE id = id".
 	config.DB.First(&todo, ID)
+
 	if todo.ID == 0 {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
 			"Message": "Item not found",
@@ -108,6 +109,7 @@ func UpdateTodo(c *gin.Context) {
 	ID := c.Param("id")
 
 	config.DB.First(&todo, ID)
+
 	if todo.ID == 0 {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
 			"Message": "Item not found",
@@ -116,7 +118,8 @@ func UpdateTodo(c *gin.Context) {
 	}
 
 	completed, _ := strconv.Atoi(c.PostForm("Completed"))
-	// This line below is represent of "UPDATE table SET field = value"
+
+	// This line below is equivalent to "UPDATE table SET field = value"
 	config.DB.Model(&todo).Update("title", c.PostForm("Title"))
 	config.DB.Model(&todo).Update("completed", completed)
 
@@ -129,6 +132,7 @@ func DeleteTodo(c *gin.Context) {
 	ID := c.Param("id")
 
 	config.DB.First(&todo, ID)
+
 	if todo.ID == 0 {
 		c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
 			"Message": "Item not found",
@@ -136,7 +140,7 @@ func DeleteTodo(c *gin.Context) {
 		return
 	}
 
-	// This line below is represent of "DELETE * FROM table WHERE id = model.id"
+	// This line below is equivalent to "DELETE * FROM table WHERE id = model.id"
 	config.DB.Delete(&todo)
 
 	c.JSON(http.StatusOK, todo)
