@@ -1,0 +1,26 @@
+package config
+
+import (
+	"go-todo/model"
+
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+)
+
+// DB is exported database pointer
+var DB *gorm.DB
+
+// DatabaseConnect is used for creating a connection to database server
+func DatabaseConnect() {
+	var err error
+	DB, err = gorm.Open("mysql", "user:password@/database-name?parseTime=true")
+	if err != nil {
+		panic("Failed to connect the database")
+	}
+	DatabaseMigrate()
+}
+
+// DatabaseMigrate is used for migrating all models into database
+func DatabaseMigrate() {
+	DB.AutoMigrate(&model.Todo{})
+}
