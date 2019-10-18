@@ -8,11 +8,14 @@ import (
 )
 
 func init() {
+	// Oepn a database connection
 	config.DatabaseConnect()
 }
 
 func main() {
+	// Initialize router
 	router := gin.Default()
+	// Using group to add prefix url
 	v1 := router.Group("/v1")
 	{
 		todo := v1.Group("/todo")
@@ -24,5 +27,6 @@ func main() {
 			todo.DELETE("/:id", controller.DeleteTodo)
 		}
 	}
+	// Run the applicantions
 	router.Run()
 }
